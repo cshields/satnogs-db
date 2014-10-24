@@ -1,6 +1,24 @@
-angular.module('satnogs-db')
-  .controller('SatnogsDBCtrl',
-              function SatnogsDBCtrl($scope, DBStorage) {
+app.controller('MainCtrl', function MainCtrl($scope, Auth) {
+
+    $scope.loggedIn = Auth.isLoggedIn();
+    $scope.username = Auth.getUserName;
+
+    $scope.logout = function() {
+        remote_db.logout(function(err, respone) {
+            if (!err) {
+                Auth.logOut();
+            }
+        });
+    };
+
+    $scope.$on('userChanged', function(event, x) {
+        $scope.loggedIn = x.loggedIn;
+        $scope.username = x.username;
+        $scope.$apply();
+    });
+});
+
+app.controller('SatnogsDBCtrl', function SatnogsDBCtrl($scope, DBStorage, $routeParams) {
 
     DBStorage.get().then(function(data) {
       docs = [];
@@ -36,7 +54,7 @@ angular.module('satnogs-db')
         }
       }
       return transponderCount;
-    }
+    };
 
     $scope.freqNum = function(value) {
         if(isNaN(value)){
@@ -45,14 +63,17 @@ angular.module('satnogs-db')
           value = value/1000000;
           value = value.toFixed(3);
           var freq = value.toString();
-          var freqFormatted = freq + " Mhz"
+          var freqFormatted = freq + " Mhz";
           return freqFormatted;
         }
-     }
+     };
+
+    $scope.$on('$viewContentLoaded', mainUI);
+
   });
 
 //Modal Controllers
-angular.module('satnogs-db').controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items, $routeParams) {
 
   $scope.ok = function () {
     $modalInstance.close($scope.selected.item);
@@ -63,7 +84,7 @@ angular.module('satnogs-db').controller('ModalInstanceCtrl', function ($scope, $
   };
 });
 
-angular.module('satnogs-db').controller('ModalEdit', function ($scope, $modal, $log) {
+app.controller('ModalEdit', function ($scope, $modal, $log, $routeParams) {
 
   $scope.open = function (size) {
     var modalInstance = $modal.open({
@@ -77,5 +98,67 @@ angular.module('satnogs-db').controller('ModalEdit', function ($scope, $modal, $
       }
     });
 
+  };
+});
+
+//Registration Form Controller
+app.controller('registrationFormCtrl', function($scope, $location, DBStorage, Auth) {
+
+  if (Auth.isLoggedIn()) {
+    $location.path('/');
+  }
+
+  $scope.registrationForm = {};
+  $scope.registrationForm.username = "";
+  $scope.registrationForm.password = "";
+
+  $scope.registrationForm.submit = function(item, event) {
+    var username = $scope.registrationForm.username;
+    var password = $scope.registrationForm.password;
+
+    remote_db.signup(username, password, function(err, response) {
+      if (err) {
+        if (err.name === 'conflict') {
+          $scope.error = 'Username already exists!';
+        } else if (err.name === 'forbidden') {
+          $scope.error = 'Invalid username/password';
+        } else {
+          $scope.error = 'Oops... Something bad happened';
+        }
+      } else {
+        $location.path('/');
+      }
+      $scope.$apply();
+    });
+  };
+});
+
+//Login Form Controller
+app.controller('loginFormCtrl', function($scope, $rootScope, $location, DBStorage, Auth) {
+  $scope.loginForm = {};
+  $scope.loginForm.username = "";
+  $scope.loginForm.password = "";
+
+  if (Auth.isLoggedIn()) {
+    $location.path('/');
+  }
+
+  $scope.loginForm.submit = function(item, event) {
+    var username = $scope.loginForm.username;
+    var password = $scope.loginForm.password;
+
+    remote_db.login(username, password, function(err, response) {
+      if (err) {
+        if (err.name === 'unauthorized') {
+          $scope.error = 'Name or password incorrect!';
+        } else {
+          $scope.error = 'Oops... Something bad happened';
+        }
+      } else {
+        Auth.logIn(response.name);
+        $location.path('/');
+      }
+      $scope.$apply();
+    });
   };
 });

@@ -1,11 +1,10 @@
-$(document).ready(function () {
+function mainUI () {
     $(document).on("mouseover", ".add-transponder", function(){
         $(this).find(".plus-tip").show();
     });
     $(document).on("mouseout", ".add-transponder", function(){
         $(this).find(".plus-tip").hide();
     });
-
     $(document).on("mouseover", ".suggest-transponder", function(){
         $(this).find(".plus-tip").show();
     });
@@ -18,4 +17,4 @@ $(document).ready(function () {
         $(".info").hide();
         $(".stats").hide();
     });
-});
+  }
