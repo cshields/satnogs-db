@@ -3,7 +3,7 @@
 {% load compress %}
 
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>SatNOGS DB{% block title %}{% endblock title %}</title>
@@ -20,7 +20,7 @@
 
   </head>
 
-  <body>
+  <body ng-app="{% block ng_app %}db{% endblock %}">
     {{ stage_notice }}
 
     <div class="container">

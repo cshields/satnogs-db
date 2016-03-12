@@ -7,7 +7,7 @@
 {% block top %}{% endblock %}
 
 {% block content %}
-  <div class="row">
+  <div class="row" ng-controller="{% block ng_controller %}AppController{% endblock %}">
     <div class="col-md-12 satellite-panels">
       <div class="panel panel-default panel-satellite">
         <div class="row panel-body">

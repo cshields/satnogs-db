@@ -1,13 +1,28 @@
-var app = angular.module('home.app.basic', []);
+(function(){
+    var app = angular.module('db', []);
 
-app.controller('AppController', ['$scope', '$http', function($scope, $http) {
+    app.controller('DbController', ['$scope', '$http', function($scope, $http){
         $scope.satellites = [];
-        return $http.get('/api/satellites').then(function(result) {
-            return angular.forEach(result.data, function(item) {
-                return $scope.satellites.push(item);
-            });
+        $scope.transmitters = [];
+        $http.get('./api/satellites/?format=json').success(function(data){
+            $scope.satellites = data;
         });
-    }
-]);
+        $http.get('./api/transmitters/?format=json').success(function(data){
+            $scope.transmitters = data;
+        });
+    }]);
+})();
 
 
+/*app.filter("lookupTransmitters", function() {
+    function lookup(noradID, transmitterList) {
+        var userName;
+        angular.forEach(transmitterList, function(transmitter) {
+            if ( transmitter.norad_cat_id == noradID ) {
+                 userName = user.user_full_name;
+            };
+        });
+        return userName;
+    };
+    return lookup;
+});*/
