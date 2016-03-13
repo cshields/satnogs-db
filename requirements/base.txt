@@ -13,7 +13,7 @@ django-braces==1.8.1
 django-secure==1.0.1
 
 # Users
-django-allauth==0.25.0
+django-allauth==0.25.1
 django-crispy-forms==1.6.0
 
 # Images
