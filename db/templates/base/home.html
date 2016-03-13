@@ -52,17 +52,18 @@
           <a href="satellite/{{ sat.norad_cat_id }}" class="satellite-item">
             <div class="row">
               <div class="col-xs-3">
-                <img ng-src="/static/img/{{ sat.image }}" alt="{{ sat.name }}" class="satellite-img">
-                {% if request.user.is_superuser and sat.pending_suggestions %}
+                <!-- Need image file path function -->
+                <img src="static/img/sat.png" alt="{{ sat.name }}" class="satellite-img">
+                <!--{% if request.user.is_superuser and sat.pending_suggestions %}
                   <div class="suggestions-counter text-info satellite-img">
                     <span class="glyphicon glyphicon-edit" title="Suggest edits"></span> {{  sat.pending_suggestions }}
                   </div>
-                {% endif %}
+                {% endif %}-->
               </div>
               <div class="col-xs-9 satellite-info">
                 <div class="satellite-title">{{ sat.norad_cat_id }} - {{ sat.name }}</div>
                 <div>{{ sat.names }}</div>
-                <div class="satellite-transmitters" ng-repeat="transmitter in transmitters[sat.norad_cat_id]">
+                <div class="satellite-transmitters" ng-repeat="transmitter in transmitters | filter:{norad_cat_id: sat.norad_cat_id}">
                   <!--{% for transmitter in transmitters.all %}-->
                     <span class="label label-default">{{ transmitter.description }}</span>
                   <!--{% endfor %}-->
