@@ -63,10 +63,8 @@
               <div class="col-xs-9 satellite-info">
                 <div class="satellite-title">{{ sat.norad_cat_id }} - {{ sat.name }}</div>
                 <div>{{ sat.names }}</div>
-                <div class="satellite-transmitters" ng-repeat="transmitter in transmitters | filter:{norad_cat_id: sat.norad_cat_id}">
-                  <!--{% for transmitter in transmitters.all %}-->
-                    <span class="label label-default">{{ transmitter.description }}</span>
-                  <!--{% endfor %}-->
+                <div class="satellite-transmitters">
+                    <span class="label label-default" ng-repeat="transmitter in transmitters | filter:{norad_cat_id: sat.norad_cat_id}">{{ transmitter.description }}</span>
                 </div>
               </div>
             </div>
