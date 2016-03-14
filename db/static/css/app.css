@@ -128,11 +128,10 @@ body {
 }
 
 .panel-satellite {
-    margin-top: 20px;
 }
 
 .panel-satellite > div {
-    margin-bottom: 10px;
+
 }
 
 .satellite-info {
@@ -190,6 +189,11 @@ a.satellite-item:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100px;
+}
+
+.satellite-export {
+    position: float;
+    float: right;
 }
 
 .panel-transmitter {

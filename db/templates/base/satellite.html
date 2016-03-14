@@ -7,20 +7,89 @@
 {% block top %}{% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12 satellite-panels">
+  <div class="row" ng-controller="{% block ng_controller %}AppController{% endblock %}">
+    <div class="col-lg-12 satellite-panels">
       <div class="panel panel-default panel-satellite">
+        <div class="panel-heading">
+          <div class="satellite-title">
+            {{ satellite }}
+            <div class="satellite-export">
+              <div>
+                <button type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal" data-target="#NewSuggestionModal">
+                  Custom Data Export
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row panel-body">
-          <div class="col-md-3 panel-satellite">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 panel-satellite">
+            <div>
+              <img src="{{ satellite.get_image }}" alt="{{ satellite.name }}" class="satellite-img-full">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 panel-satellite">
+            <table class="table">
+              <tr>
+                <td>NORAD CAT ID</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+              <tr>
+                <td>COSPAR ID</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+              <tr>
+                <td>Perigee</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+              <tr>
+                <td>Apogee</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+              <tr>
+                <td>Launch date</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+              <tr>
+                <td>Source</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+              <tr>
+                <td>Launch site</td>
+                <td>{{ satellite.norad_cat_id }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 panel-satellite">
             <div class="satellite-title">
               {{ satellite }}
             </div>
             <div>
-              {{ satellite.names }}
+              <button type="button"
+                      class="btn btn-light"
+                      data-toggle="modal">
+                Read More on Wikipedia
+              </button>
             </div>
-            <div>
-              <img src="{{ satellite.get_image }}" alt="{{ satellite.name }}" class="satellite-img-full">
-            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transmitters -->
+  <div class="row">
+    <div class="col-lg-12 satellite-panels">
+      <div class="panel panel-default panel-satellite">
+        <div class="panel-heading">
+          <div class="satellite-title">
+            Transmitters
+          </div>
+        </div>
+        <div class="row panel-body">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 panel-satellite">
             {% if suggestions %}
               <div class="suggestions-counter label label-primary">
                 {{ suggestions.count }} suggestion{{ suggestions.count|pluralize }} pending
@@ -51,7 +120,7 @@
                       </h3>
                     </div>
                     <div class="row panel-body">
-                      <div class="col-md-12">
+                      <div class="col-lg-12">
                         {% if transmitter.alive %}
                           {% include "includes/field.html" with name="Alive" value=transmitter.alive %}
                         {% endif %}
@@ -165,7 +234,7 @@
                 {% endif %}
               {% empty %}
                 <div class="row panel-body">
-                  <div class="col-md-12">
+                  <div class="col-lg-12">
                     <span class="text-danger">No approved transmitters yet for this Satellite.</span>
                   </div>
                 </div>
@@ -189,7 +258,7 @@
                         </h3>
                       </div>
                       <div class="row panel-body">
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                           {% if suggestion.alive %}
                             {% include "includes/field.html" with name="Alive" value=suggestion.alive original=suggestion.transmitter.alive %}
                           {% endif %}
@@ -233,6 +302,42 @@
 
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Telemetry -->
+  <div class="row">
+    <div class="col-lg-12 satellite-panels">
+      <div class="panel panel-default panel-satellite">
+        <div class="panel-heading">
+          <div class="satellite-title">
+            Telemetry
+          </div>
+        </div>
+        <div class="row panel-body">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 panel-satellite">
+            <ul class="list-group">
+              <li class="list-group-item">Overview</li>
+              <li class="list-group-item">Current_location</li>
+              <li class="list-group-item">EPS_V</li>
+              <li class="list-group-item">OBC_Temp</li>
+              <li class="list-group-item">ADCS_Tm</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 satellite-panels">
+      <div>
+        <button type="button"
+                class="btn btn-primary"
+                data-toggle="modal" data-target="#NewSuggestionModal">
+          Custom Data Export
+        </button>
       </div>
     </div>
   </div>
