@@ -243,6 +243,10 @@ a.satellite-item:hover {
     margin-bottom: 0;
 }
 
+#collapseTransmitters .col-md-4 .panel {
+    height: 100%;
+}
+
 /*For transmitter boxes */
 .nopadding > [class*='col-'] {
     min-height: 100% !important;
@@ -254,6 +258,10 @@ a.satellite-item:hover {
     height: 100%;
   margin-right: 0;
   margin-left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
 }
 
 .satellite-options {
