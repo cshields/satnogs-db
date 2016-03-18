@@ -127,6 +127,11 @@ body {
     max-width: 20px;
 }
 
+.satellite-panels .panel-heading {
+    background: #000;
+    color: #FFF;
+}
+
 .panel-satellite {
 }
 
@@ -179,6 +184,23 @@ a.satellite-item:hover {
     border-radius: 5px;
 }
 
+#satellite-collapse {
+    cursor: pointer;
+}
+
+#satellite-collapse span:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e113";
+    color: #FFF;
+    float: right;
+    cursor: pointer;
+}
+#satellite-collapse.collapsed span:after {
+    content:"\e114";
+    color: #FFF;
+    cursor: pointer;
+}
+
 .satellite-transmitters {
     position: absolute;
     bottom: 0px;
@@ -191,7 +213,7 @@ a.satellite-item:hover {
     width: 100px;
 }
 
-.satellite-export {
+.satellite-options {
     position: float;
     float: right;
 }
