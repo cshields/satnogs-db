@@ -130,6 +130,7 @@ body {
 .satellite-panels .panel-heading {
     background: #000;
     color: #FFF;
+    border: 0;
 }
 
 .panel-satellite {
@@ -233,13 +234,40 @@ a.satellite-item:hover {
     width: 100px;
 }
 
+#collapseTransmitters .row, #collapseTransmitters .panel, #collapseTransmitters .panel-body {
+    padding: 0;
+    border-radius: 0;
+}
+
+#collapseTransmitters .panel {
+    margin-bottom: 0;
+}
+
+/*For transmitter boxes */
+.nopadding > [class*='col-'] {
+    min-height: 100% !important;
+    padding-right:0;
+    padding-left:0;
+}
+
+.row.nopadding {
+    height: 100%;
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .satellite-options {
     position: float;
     float: right;
 }
-
 .panel-transmitter {
-    margin: 20px 0px;
+    border: none;
+    border-left: 10px solid #333;
+}
+.panel-transmitter .panel-heading {
+    background: #337ab7;
+    border: 0;
+    border-radius: 0;
 }
 
 .panel-first {
@@ -267,6 +295,11 @@ a.satellite-item:hover {
 .transmitter-element-suggest {
     margin-bottom: 10px;
 }
+
+.transmitter-title {
+    font-size: 14px;
+}
+
 
 .info {
     margin-top: 30px;
