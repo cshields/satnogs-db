@@ -133,10 +133,25 @@ body {
 }
 
 .panel-satellite {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .panel-satellite > div {
 
+}
+
+.panel-satellite p {
+    padding: 10px 0;
+}
+
+/* For satellite overview table */
+.table > tbody > tr:first-child > td {
+    border: none;
+}
+
+.table {
+    margin-bottom: 0;
 }
 
 .satellite-info {
