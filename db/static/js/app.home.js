@@ -1,7 +1,7 @@
 (function(){
     var app = angular.module('db', []);
 
-    app.controller('DbController', ['$scope', '$http', '$log', function($scope, $http, $log){
+    app.controller('DbController', ['$scope',  '$http', '$log', function($scope, $http, $log){
         $scope.satellites = [];
         $scope.satellites.transmitters = [];
         $http.get('./api/satellites/?format=json').success(function(data){
@@ -23,4 +23,6 @@
             controllerAs: satellites
         }
     });*/
+
+
 })();

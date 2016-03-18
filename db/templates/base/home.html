@@ -52,8 +52,7 @@
           <a href="satellite/{{ sat.norad_cat_id }}" class="satellite-item">
             <div class="row">
               <div class="col-xs-3">
-                <!-- Need image file path function -->
-                <img src="static/img/sat.png" alt="{{ sat.name }}" class="satellite-img">
+                <img ng-src="{{ sat.image || '/static/img/sat.png' }}" alt="{{ sat.name }}" class="satellite-img">
                 <!--{% if request.user.is_superuser and sat.pending_suggestions %}
                   <div class="suggestions-counter text-info satellite-img">
                     <span class="glyphicon glyphicon-edit" title="Suggest edits"></span> {{  sat.pending_suggestions }}
