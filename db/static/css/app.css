@@ -167,7 +167,6 @@ a.satellite-item:hover {
 }
 
 .satellite-title {
-    font-weight: bold;
     font-size: 1.2em;
 }
 
@@ -185,6 +184,7 @@ a.satellite-item:hover {
 }
 
 #satellite-collapse {
+    background: #333;
     cursor: pointer;
 }
 
@@ -192,13 +192,18 @@ a.satellite-item:hover {
     font-family:'Glyphicons Halflings';
     content:"\e113";
     color: #FFF;
-    float: right;
+    padding-right: 10px;
     cursor: pointer;
 }
 #satellite-collapse.collapsed span:after {
     content:"\e114";
     color: #FFF;
     cursor: pointer;
+}
+
+.satellite-export {
+    margin-top: -8px;
+    margin-right: -10px;
 }
 
 .satellite-transmitters {
