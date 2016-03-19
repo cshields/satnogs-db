@@ -1,4 +1,15 @@
-<div class="row transmitter-element">
+<tr>
+	<td>
+		{{ name }}
+	</td>
+	<td>
+		{{ value }}
+	      {% if original %}
+	        <div class="text-muted">{{ original }}</div>
+	      {% endif %}
+	</td>
+</tr>
+<!--<div class="row transmitter-element">
   <div class="col-md-6">
     <span class="label label-default">{{ name }}</span>
   </div>
@@ -8,4 +19,4 @@
         <div class="text-muted">{{ original }}</div>
       {% endif %}
   </div>
-</div>
+</div>-->

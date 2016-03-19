@@ -127,12 +127,6 @@ body {
     max-width: 20px;
 }
 
-.satellite-panels .panel-heading {
-    background: #000;
-    color: #FFF;
-    border: 0;
-}
-
 .panel-satellite {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -153,6 +147,12 @@ body {
 
 .table {
     margin-bottom: 0;
+}
+
+.satellite-panels .panel-heading {
+    background: #000;
+    color: #FFF;
+    border: 0;
 }
 
 .satellite-info {
@@ -184,6 +184,11 @@ a.satellite-item:hover {
 
 .satellite-title {
     font-size: 1.2em;
+}
+
+.satellite-options {
+    position: float;
+    float: right;
 }
 
 .satellite-img {
@@ -244,31 +249,27 @@ a.satellite-item:hover {
 }
 
 #collapseTransmitters .col-md-4 .panel {
+}
+
+#collapseTransmitters .panel-satellite {
+    padding: 10px 22px;
     height: 100%;
 }
 
 /*For transmitter boxes */
-.nopadding > [class*='col-'] {
-    min-height: 100% !important;
-    padding-right:0;
-    padding-left:0;
+.nopadding > .col-md-4 { /* [class*='col-'] { */
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .row.nopadding {
     height: 100%;
   margin-right: 0;
   margin-left: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display:         flex;
 }
 
-.satellite-options {
-    position: float;
-    float: right;
-}
 .panel-transmitter {
+    min-height: 240px;
     border: none;
     border-left: 10px solid #333;
 }

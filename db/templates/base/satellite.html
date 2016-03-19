@@ -15,6 +15,7 @@
             {{ satellite }}
             <div class="satellite-options">
               <span>
+                <!-- Expand / Collapse icon -->
               </span>
               <button class="btn btn-primary satellite-export" data-toggle="modal" data-target="#NewSuggestionModal">
                 Export JSON
@@ -110,7 +111,7 @@
             <div class="panel-body">
               <div class="row nopadding">
                 {% for transmitter in satellite.transmitters.all %}
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-height">
                     <div class="panel panel-primary panel-transmitter">
                       <div class="panel-heading">
                         <h3 class="panel-title">
@@ -124,31 +125,33 @@
                         </h3>
                       </div>
                       <div class="row panel-body">
-                        <div class="col-lg-12">
-                          {% if transmitter.alive %}
-                            {% include "includes/field.html" with name="Alive" value=transmitter.alive %}
-                          {% endif %}
-                          {% if transmitter.mode %}
-                            {% include "includes/field.html" with name="Mode" value=transmitter.mode %}
-                          {% endif %}
-                          {% if transmitter.invert %}
-                            {% include "includes/field.html" with name="Invert" value=transmitter.invert %}
-                          {% endif %}
-                          {% if transmitter.baud %}
-                            {% include "includes/field.html" with name="Baud" value=transmitter.baud %}
-                          {% endif %}
-                          {% if transmitter.uplink_low %}
-                            {% include "includes/field.html" with name="Uplink Low" value=transmitter.uplink_low|frq %}
-                          {% endif %}
-                          {% if transmitter.uplink_high %}
-                            {% include "includes/field.html" with name="Uplink High" value=transmitter.uplink_high|frq %}
-                          {% endif %}
-                          {% if transmitter.downlink_low %}
-                            {% include "includes/field.html" with name="Downlink Low" value=transmitter.downlink_low|frq %}
-                          {% endif %}
-                          {% if transmitter.downlink_high %}
-                            {% include "includes/field.html" with name="Downlink High" value=transmitter.downlink_high|frq %}
-                          {% endif %}
+                        <div class="col-md-12 panel-satellite">
+                          <table class="table">
+                            {% if transmitter.alive %}
+                              {% include "includes/field.html" with name="Alive" value=transmitter.alive %}
+                            {% endif %}
+                            {% if transmitter.mode %}
+                              {% include "includes/field.html" with name="Mode" value=transmitter.mode %}
+                            {% endif %}
+                            {% if transmitter.invert %}
+                              {% include "includes/field.html" with name="Invert" value=transmitter.invert %}
+                            {% endif %}
+                            {% if transmitter.baud %}
+                              {% include "includes/field.html" with name="Baud" value=transmitter.baud %}
+                            {% endif %}
+                            {% if transmitter.uplink_low %}
+                              {% include "includes/field.html" with name="Uplink Low" value=transmitter.uplink_low|frq %}
+                            {% endif %}
+                            {% if transmitter.uplink_high %}
+                              {% include "includes/field.html" with name="Uplink High" value=transmitter.uplink_high|frq %}
+                            {% endif %}
+                            {% if transmitter.downlink_low %}
+                              {% include "includes/field.html" with name="Downlink Low" value=transmitter.downlink_low|frq %}
+                            {% endif %}
+                            {% if transmitter.downlink_high %}
+                              {% include "includes/field.html" with name="Downlink High" value=transmitter.downlink_high|frq %}
+                            {% endif %}
+                          </table>
                         </div>
                       </div>
                     </div>
@@ -233,7 +236,7 @@
                   {% if forloop.counter|divisibleby:3 %}
                     </div>
                      {% if not loop.last %}
-                       <div class="row">
+                       <div class="row nopadding">
                      {% endif %}
                   {% endif %}
                 {% empty %}
