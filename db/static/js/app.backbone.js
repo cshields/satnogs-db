@@ -32,13 +32,13 @@ d3.lineChart = function(telemetry_key, unit) {
             switch(_data.length) {
             case 1:
                 y1 = d3.scale.linear()
-                    .domain([0, d3.max(_data, function(d){ return +d.decoded.damod_data[telemetry_key]; })])
+                    .domain([0, d3.max(_data, function(d){ return +d.decoded.demod_data[telemetry_key]; })])
                     .range([chartH, 0])
                     .nice(4);
                 break;
             default:
                 y1 = d3.scale.linear()
-                .domain(d3.extent(_data, function(d){ return +d.decoded.damod_data[telemetry_key]; }))
+                .domain(d3.extent(_data, function(d){ return +d.decoded.demod_data[telemetry_key]; }))
                 .range([chartH, 0])
                 .nice(4);
             }
@@ -102,13 +102,13 @@ d3.lineChart = function(telemetry_key, unit) {
                     .enter().append('circle')
                     .attr('r', 4)
                     .attr('cx', function() { return chartW / 2 + config.margin.left; })
-                    .attr('cy', function(d) { return y1(d.decoded.damod_data[telemetry_key]) + config.margin.top; })
+                    .attr('cy', function(d) { return y1(d.decoded.demod_data[telemetry_key]) + config.margin.top; })
                     .attr('class', 'circle')
                     .on('mouseover', function(d) {
                         div.transition()
                             .duration(200)
                             .style('opacity', 1);
-                        div.html(d.decoded.damod_data[telemetry_key] + ' (' + unit + ')')
+                        div.html(d.decoded.demod_data[telemetry_key] + ' (' + unit + ')')
                            .style('left', (d3.event.pageX) + 'px')
                            .style('top', (d3.event.pageY - 26) + 'px');
                     })
@@ -124,7 +124,7 @@ d3.lineChart = function(telemetry_key, unit) {
                 // Define the line
                 var valueline = d3.svg.line()
                     .x(function(d,i) { return (xInterval*i + config.margin.left); })
-                    .y(function(d) { return y1(d.decoded.damod_data[telemetry_key]) + config.margin.top; });
+                    .y(function(d) { return y1(d.decoded.demod_data[telemetry_key]) + config.margin.top; });
 
                 // Add the valueline path
                 svg.append('path')
@@ -137,13 +137,13 @@ d3.lineChart = function(telemetry_key, unit) {
                     .enter().append('circle')
                     .attr('r', 4)
                     .attr('cx', function(d, i) { return xInterval*i + config.margin.left; })
-                    .attr('cy', function(d) { return y1(d.decoded.damod_data[telemetry_key]) + config.margin.top; })
+                    .attr('cy', function(d) { return y1(d.decoded.demod_data[telemetry_key]) + config.margin.top; })
                     .attr('class', 'circle')
                     .on('mouseover', function(d) {
                         div.transition()
                             .duration(200)
                             .style('opacity', 1);
-                        div.html(d.decoded.damod_data[telemetry_key] + ' (' + unit + ')')
+                        div.html(d.decoded.demod_data[telemetry_key] + ' (' + unit + ')')
                            .style('left', (d3.event.pageX) + 'px')
                            .style('top', (d3.event.pageY - 26) + 'px');
                     })
@@ -187,16 +187,47 @@ if (has_telemetry_data) {
     // Backbone Models
 
     Backbone.Model.extend({});
+    telemetryModel = Backbone.Model.extend({
+        parse: function(response) {
+            //console.log("parsing response: " + response);
+            if (_.has(response, 'decoded')) {
+                var decodedArray = response.decoded.replace(/\'/g, "\"").replace('[', '').replace(']', '');
+                console.log("json " + JSON.parse(decodedArray));
+                //console.log("decoded " + decodedArray);
+                if (decodedCollection.length > 0) {
+                    decodedCollection.add(new Backbone.Model(decodedArray));
+                } else {
+                    decodedCollection = new DecodedCollection(new Backbone.Model(decodedArray));
+                }
+            }
+            return response;
+        }
+    })
+
+    DecodedModel = Backbone.Model.extend({
+        parse: function(response) {
+            console.log("response: " + response)
+            if(response.length !== 0) {
+                return response[0];
+            }
+        }
+    })
 
     // Backbone Collections
 
+    var DecodedCollection = Backbone.Collection.extend({
+        //model: DecodedModel
+    })
+
     var TelemetryCollection = Backbone.Collection.extend({
-        url:'/api/telemetry/?satellite=' + satelliteId
+        url:'/api/telemetry/?format=json&satellite=' + satelliteId,
+        model: telemetryModel
     });
 
     var TelemetryDescriptors = TelemetryCollection.extend({
         parse: function(response){
             if(response.length !== 0) {
+                console.log("returning schema response");
                 return response[0].schema;
             }
         }
@@ -204,11 +235,15 @@ if (has_telemetry_data) {
 
     var TelemetryValues = TelemetryCollection.extend({
         comparator: function(collection){
+            //return( collection.get('decoded').observation_datetime );
+            //console.log(TelemetryCollection instanceof Backbone.Collection);
             return( collection.get('decoded').observation_datetime );
         },
         byDate: function (start_date, end_date) {
             var filtered = this.filter(function (model) {
+                //var date = parseDateFilter(model.get('decoded').observation_datetime);
                 var date = parseDateFilter(model.get('decoded').observation_datetime);
+                //console.log("Date: " + date);
                 return ( date >= start_date && date <= end_date );
             });
             return new TelemetryValues(filtered);
@@ -221,6 +256,7 @@ if (has_telemetry_data) {
         el: '#telemetry-descriptors',
         template: _.template($('#telemetryDescriptorsTemplate').html()),
         initialize: function(){
+            console.log(this.collection.length);
             this.listenTo(this.collection, 'add reset change remove', this.renderItem);
             this.collection.fetch();
         },
@@ -235,7 +271,9 @@ if (has_telemetry_data) {
         chart: null,
         chartSelection: null,
         initialize: function() {
+            //console.log(this.collection.toJSON());
             this.collection.fetch();
+            console.log("just fetched");
             this.updateDates(moment().subtract(7, 'days').format('YYYY/MM/DD'), moment().format('YYYY/MM/DD'));
             this.renderPlaceholder();
             this.collection.on('update filter', this.render, this);
@@ -245,15 +283,18 @@ if (has_telemetry_data) {
             'click .telemetry-key': 'updateKey',
         },
         render: function() {
+            console.log(this.collection.get('decoded'));
             if (this.collection.length > 0) {
                 $('#telemetry-descriptors').show();
                 $('#data-available').empty();
                 d3.select('svg').remove();
-                var data = this.collection.toJSON();
+                var data = this.collection.get('decoded').toJSON();
+                console.log(data);
                 this.chartSelection = d3.select(this.el)
                     .datum(data)
                     .call(d3.lineChart(data[0].schema[0].key, data[0].schema[0].unit));
             } else {
+                console.log("no data, rendering placeholder");
                 this.renderPlaceholder();
             }
         },
@@ -277,8 +318,10 @@ if (has_telemetry_data) {
 
     // Fetch data and render views
 
+    var decodedCollection = new DecodedCollection();
     new TelemetryDescriptorsView({ collection: new TelemetryDescriptors() });
     var telemetryValues = new TelemetryValues();
+    console.log(this.decodedCollection);
     var telemetryChartView = new TelemetryChartView({collection: telemetryValues});
 
     $('input[name="daterange"]').daterangepicker(
@@ -289,9 +332,11 @@ if (has_telemetry_data) {
             dateLimit: {
                 'days': 60
             },
-            autoApply: true,
-            startDate: moment().subtract(7, 'days').format('YYYY/MM/DD'),
-            endDate: moment().format('YYYY/MM/DD'),
+            //autoApply: true,
+            //startDate: moment().subtract(7, 'days').format('YYYY/MM/DD'),
+            //endDate: moment().format('YYYY/MM/DD'),
+            startDate: '2017/05/20',
+            endDate: '2017/05/21',
         },
         function(start, end) {
             telemetryChartView.updateDates(start.format('YYYYMMDD'), end.format('YYYYMMDD'));

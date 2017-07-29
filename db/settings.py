@@ -227,7 +227,7 @@ REST_FRAMEWORK = {
 }
 
 # Security
-SECRET_KEY = getenv('SECRET_KEY', 'changeme')
+SECRET_KEY = getenv('SECRET_KEY', 'ch4ngeme')
 CSP_DEFAULT_SRC = (
     "'self'",
     'https://*.mapbox.com',
